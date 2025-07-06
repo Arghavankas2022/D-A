@@ -54,31 +54,40 @@ public:
 
             return Z;
         }
-    };
-
-    int main(){
-        
-        Solution Sol;
-        std::vector<int> array={3,5,6,2,7,4,3,19,3,22};
-        std::vector<int> sorted = Sol.SelectionSort(array);
-        std::cout << "Sorted array: ";
-        for (int num : sorted) {
-            std::cout << num << " ";
+    
+    //Merge sort with complexity of nlogn
+    
+    std::vector<int> Mergesort(std::vector<int> nums) {
+        int n = nums.size();
+        if (n <= 1) {
+            return nums; // base case
         }
-        std::cout << std::endl;
         
-        std::vector<int> X = {3,4,2,5,6,7,23,1};
-        std::vector<int> Y = {4,5,6,31,2,3,8};
-        std::vector<int> merged = Sol.Merge(X,Y);
-        std::cout << "merged array: ";
-        for (int num : merged) {
-            std::cout << num << " ";
-        }
-        std::cout << std::endl;
+        int m = n / 2;
+        std::vector<int> left(nums.begin(), nums.begin() + m);
+        std::vector<int> right(nums.begin() + m, nums.end());
         
+        left = Mergesort(left);
+        right = Mergesort(right);
         
+        return Merge(left, right);
     }
+};
 
+int main(){
+    
+    Solution Sol;
+    std::vector<int> array={3,5,6,2,7,4,3,19,3,22};
+    std::vector<int> sorted = Sol.Mergesort(array);
+    std::cout << "Sorted array: ";
+    for (int num : sorted) {
+        std::cout << num << " ";
+    }
+    std::cout << std::endl;
+
+
+    
+}
 
 
 

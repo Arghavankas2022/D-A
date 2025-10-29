@@ -1,3 +1,7 @@
+//Implementation of Jarvis March 
+// The left most point is picked as the starting point, then another random point is picked, for this point we check wether it makes a right turn with any other point , if it does, we discard it and selec the new point,similarily we continue until we reach the initial left most point
+// O(n.h), where n is the number of points and h is the number of segments on the hull
+
 #include <iostream>
 #include <vector>
 using namespace std;
@@ -6,7 +10,7 @@ struct Point {
     double x, y;
 };
 
-// Returns true if q→r→s makes a right turn (clockwise)
+// Returns true if q→r→s makes a right turn 
 bool right_turn(const Point &q, const Point &r, const Point &s) {
     double d = (s.y - q.y) * (r.x - q.x) - (s.x - q.x) * (r.y - q.y);
     return d < 0;
@@ -19,8 +23,8 @@ vector<Point> ConvexHull(vector<Point> &points) {
     // Find the leftmost point (if tie, lowest y)
     int leftmost = 0;
     for (int i = 1; i < n; i++) {
-        if (points[i].x < points[leftmost].x ||
-           (points[i].x == points[leftmost].x && points[i].y < points[leftmost].y)) {
+        if (points[i].x < points[leftmost].x || 
+           (points[i].x == points[leftmost].x && points[i].y < points[leftmost].y)) { //if there are two left most points, pick one with low y
             leftmost = i;
         }
     }
@@ -29,17 +33,17 @@ vector<Point> ConvexHull(vector<Point> &points) {
     int q = leftmost, r;
 
     do {
-        hull.push_back(points[q]);
+        hull.push_back(points[q]); //add point to the hull 
         r = (q + 1) % n;
 
         for (int i = 0; i < n; i++) {
-            if (right_turn(points[q], points[r], points[i])) {
+            if (right_turn(points[q], points[r], points[i])) { // if point r makes a right turn with point i --> discard r and mark i as next
                 r = i;
             }
         }
 
         q = r;
-    } while (q != leftmost);
+    } while (q != leftmost); //stop when the first point is reached
 
     return hull;
 }
